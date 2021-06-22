@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "lJ0ddVwg3UvYMasn+TeWkW+jL5tTeZc5+y+N8WqiM1Dk4urLm6yjrtYvZOiLarQl/WFnLX0DXO+vPI3lpL44nQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\dream\\plcproj\\microc\\microcc.fsproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\dream\\.nuget\\packages\\fsharp.core\\5.0.0\\fsharp.core.5.0.0.nupkg.sha512",
+    "C:\\Users\\dream\\.nuget\\packages\\fslexyacc\\10.0.0\\fslexyacc.10.0.0.nupkg.sha512",
+    "C:\\Users\\dream\\.nuget\\packages\\fslexyacc.runtime\\10.0.0\\fslexyacc.runtime.10.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
