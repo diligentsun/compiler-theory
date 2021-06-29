@@ -18,12 +18,15 @@ type instr =
   | FLabel of int * label                     (* symbolic label; pseudo-instruc. *)
   | CSTI of int32                        (* constant                        *)
   | CSTF of int32                        (* constant                        *)
+  | CSTC of int32                        (* constant                        *)
   | OFFSET of int                        (* constant     偏移地址  x86     *) 
   | GVAR of int                        (* global var     全局变量  x86     *) 
   | ADD                                (* addition                        *)
   | SUB                                (* subtraction                     *)
+  | EXPON                               (*Exponentiation                  *)
   | MUL                                (* multiplication                  *)
   | DIV                                (* division                        *)
+  | DIVR                                (* division                        *)
   | MOD                                (* modulus                         *)
   | EQ                                 (* equality: s[sp-1] == s[sp]      *)
   | LT                                 (* less than: s[sp-1] < s[sp]      *)
@@ -174,6 +177,12 @@ let CODESTOP   = 25;
 [<Literal>]
 let CODECSTF    = 26;
 
+[<Literal>]
+let CODECSTC    = 27;
+[<Literal>]
+let CODEEXPON   = 31;
+[<Literal>]
+let CODEDIVR    = 32;
 (* Bytecode emission, first pass: build environment that maps 
    each label to an integer address in the bytecode.
  *)
@@ -185,12 +194,15 @@ let makelabenv (addr, labenv) instr =
     | FLabel (m,lab)      -> (addr, (lab, addr) :: labenv)
     | CSTI i         -> (addr+2, labenv)
     | CSTF i         -> (addr+2, labenv)
+    | CSTC i         -> (addr+2, labenv)
     | GVAR i         -> (addr+2, labenv)
     | OFFSET i       -> (addr+2, labenv)
     | ADD            -> (addr+1, labenv)
     | SUB            -> (addr+1, labenv)
     | MUL            -> (addr+1, labenv)
+    | EXPON          -> (addr+1, labenv)
     | DIV            -> (addr+1, labenv)
+    | DIVR            ->(addr+1, labenv)
     | MOD            -> (addr+1, labenv)
     | EQ             -> (addr+1, labenv)
     | LT             -> (addr+1, labenv)
@@ -224,12 +236,15 @@ let rec emitints getlab instr ints =
     | FLabel (m,lab) -> ints
     | CSTI i         -> CODECSTI   :: i :: ints
     | CSTF i         -> CODECSTF   :: i :: ints
+    | CSTC i         -> CODECSTC   :: i :: ints
     | GVAR i         -> CODECSTI   :: i :: ints
     | OFFSET i       -> CODECSTI   :: i :: ints
+    | EXPON          -> CODEEXPON  :: ints
     | ADD            -> CODEADD    :: ints
     | SUB            -> CODESUB    :: ints
     | MUL            -> CODEMUL    :: ints
     | DIV            -> CODEDIV    :: ints
+    | DIVR            -> CODEDIVR    :: ints
     | MOD            -> CODEMOD    :: ints
     | EQ             -> CODEEQ     :: ints
     | LT             -> CODELT     :: ints
@@ -285,8 +300,10 @@ let rec decomp ints : instr list =
     | []                                              ->  []
     | CODEADD :: ints_rest                         ->   ADD           :: decomp ints_rest
     | CODESUB    :: ints_rest                         ->   SUB           :: decomp ints_rest
+    | CODEEXPON    :: ints_rest                        ->   EXPON       :: decomp ints_rest
     | CODEMUL    :: ints_rest                         ->   MUL           :: decomp ints_rest
     | CODEDIV    :: ints_rest                         ->   DIV           :: decomp ints_rest
+    | CODEDIVR    :: ints_rest                         ->   DIVR           :: decomp ints_rest
     | CODEMOD    :: ints_rest                         ->   MOD           :: decomp ints_rest
     | CODEEQ     :: ints_rest                         ->   EQ            :: decomp ints_rest
     | CODELT     :: ints_rest                         ->   LT            :: decomp ints_rest
@@ -310,5 +327,6 @@ let rec decomp ints : instr list =
     | CODESTOP   :: ints_rest                         ->   STOP             :: decomp ints_rest
     | CODECSTI   :: i :: ints_rest                    ->   CSTI i :: decomp ints_rest      
     | CODECSTF   :: i :: ints_rest                  ->   CSTF i         :: decomp ints_rest    
+    | CODECSTC   :: i :: ints_rest                  ->   CSTC i         :: decomp ints_rest        
     | _                                       ->    printf "%A" ints; failwith "unknow code"
 

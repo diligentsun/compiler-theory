@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\dream\\microc\\interpc.fsproj": {}
+    "C:\\Users\\dream\\plcproj\\microc\\interpc.fsproj": {}
   },
   "projects": {
-    "C:\\Users\\dream\\microc\\interpc.fsproj": {
+    "C:\\Users\\dream\\plcproj\\microc\\interpc.fsproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\dream\\microc\\interpc.fsproj",
+        "projectUniqueName": "C:\\Users\\dream\\plcproj\\microc\\interpc.fsproj",
         "projectName": "interpc",
-        "projectPath": "C:\\Users\\dream\\microc\\interpc.fsproj",
+        "projectPath": "C:\\Users\\dream\\plcproj\\microc\\interpc.fsproj",
         "packagesPath": "C:\\Users\\dream\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\dream\\microc\\obj\\",
+        "outputPath": "C:\\Users\\dream\\plcproj\\microc\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\dream\\AppData\\Roaming\\NuGet\\NuGet.Config"
